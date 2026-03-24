@@ -474,3 +474,71 @@ class AgeofChan:
         if args.cmd == "sim-demo":
             engine = CampaignSimulator(self.w3, zone_count=1024)
             attacker_id, _defender_id = engine.bootstrap_demo(
+                seed=args.seed,
+                attacker_seed=args.attacker_power_seed,
+                defender_seed=args.defender_power_seed,
+                attacker_stash_wei=args.attacker_stash_wei,
+                defender_stash_wei=args.defender_stash_wei,
+                from_zone_id=args.from_zone,
+                to_zone_id=args.to_zone,
+            )
+            steps = engine.run_campaign(
+                seed=args.seed,
+                turns=args.turns,
+                from_zone_id=args.from_zone,
+                target_zone_id=args.to_zone,
+                attacker_id=attacker_id,
+                pot_wei=args.pot_wei,
+            )
+            print(render_campaign_report(steps))
+            return 0
+
+        if args.cmd == "sim-route":
+            g = RouteGraph(zone_count=1024, width=32)
+            path = g.shortest_path(args.from_zone, args.to_zone, max_hops=args.max_hops)
+            print(json.dumps({"distance": path.distance, "nodes": path.nodes}, indent=2))
+            return 0
+
+        if args.cmd == "sim-plan-raid":
+            sim = DopeModaLocalSim(self.w3)
+            rng = random.Random(int(args.seed))
+            attacker = sim.register_gang(
+                founder="attacker",
+                initial_stash_wei=args.attacker_stash_wei,
+                power_seed=args.attacker_power_seed,
+            )
+            defender = sim.register_gang(
+                founder="defender",
+                initial_stash_wei=args.defender_stash_wei,
+                power_seed=args.defender_power_seed,
+            )
+            sim.claim_zone(attacker.gang_id, args.from_zone)
+            sim.claim_zone(defender.gang_id, args.to_zone)
+            attacker.racket_bullets = int(10_000 + rng.randint(0, 5_000))
+            attacker.racket_tier = int(rng.randint(0, 15))
+
+            plan = sim.plan_best_tactic(
+                attacker_id=attacker.gang_id,
+                from_zone_id=args.from_zone,
+                to_zone_id=args.to_zone,
+                pot_wei=args.pot_wei,
+                roll_assumption_bps=None,
+            )
+            print(json.dumps(plan, indent=2))
+            return 0
+
+        print("Unknown command")
+        return 1
+
+
+# -----------------------------------------------------------------------------
+# Offline strategist simulator (no on-chain writes; mirrors DopeModa math)
+# -----------------------------------------------------------------------------
+
+# These helpers let the CLI plan raids and training outcomes without having
+# to rely on the commit/reveal randomness from a live chain. It is intended
+# for “what-if” planning and UI scaffolding.
+
+DM_BPS_DENOM = 10_000
+
+

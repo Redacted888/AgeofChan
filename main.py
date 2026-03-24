@@ -270,3 +270,71 @@ class AgeofChan:
     def train(self, gang_id: int, training_line: int, spent_wei: int) -> str:
         tx_fn = self.contract.functions.train(gang_id, training_line, spent_wei)
         return self._transact(tx_fn, value_wei=0)
+
+    def claim_zone(self, gang_id: int, zone_id: int, emblem_hex: str, value_wei: int) -> str:
+        emblem = self.encode_bytes32(emblem_hex)
+        tx_fn = self.contract.functions.claimZone(gang_id, zone_id, emblem)
+        return self._transact(tx_fn, value_wei=value_wei)
+
+    def commit_raid(
+        self,
+        fromGangId: int,
+        fromZone: int,
+        toZone: int,
+        tactic: int,
+        reveal_salt_hex: str,
+        pot_wei: int,
+    ) -> Tuple[str, str]:
+        """
+        Commit requires `sealed` which must match computeRevealHash() later.
+        We compute sealed from the given reveal salt (bytes32).
+        """
+        reveal_salt = bytes.fromhex(reveal_salt_hex[2:] if reveal_salt_hex.startswith("0x") else reveal_salt_hex)
+        if len(reveal_salt) != 32:
+            raise ValueError("reveal_salt_hex must be 32 bytes (0x + 64 hex chars)")
+
+        sealed = self.computeRevealHash(fromGangId, fromZone, toZone, tactic, reveal_salt)
+        tx_fn = self.contract.functions.commitRaid(fromGangId, fromZone, toZone, tactic, sealed, pot_wei)
+        tx_hash = self._transact(tx_fn, value_wei=pot_wei)
+        return tx_hash, sealed
+
+    def reveal_raid(self, raid_id: int, reveal_salt_hex: str) -> str:
+        salt_bytes = bytes.fromhex(reveal_salt_hex[2:] if reveal_salt_hex.startswith("0x") else reveal_salt_hex)
+        if len(salt_bytes) != 32:
+            raise ValueError("reveal_salt_hex must be 32 bytes (0x + 64 hex chars)")
+        tx_fn = self.contract.functions.revealRaid(raid_id, salt_bytes)
+        return self._transact(tx_fn, value_wei=0)
+
+    def withdraw(self, gang_id: int) -> str:
+        tx_fn = self.contract.functions.withdrawGang(gang_id)
+        return self._transact(tx_fn, value_wei=0)
+
+    # -----------------------------
+    # CLI layer
+    # -----------------------------
+
+    def run(self, argv: Optional[List[str]] = None) -> int:
+        argv = argv if argv is not None else sys.argv[1:]
+
+        p = argparse.ArgumentParser(prog="AgeofChan", description="Gang CLI for DopeModa")
+        p.add_argument("--rpc", default=os.environ.get("RPC_URL", DEFAULT_RPC))
+        p.add_argument("--contract", required=True, help="DopeModa deployed contract address")
+        p.add_argument("--artifact", default=None, help="Hardhat artifact path with abi")
+        p.add_argument("--pk", default=os.environ.get("PRIVATE_KEY"), help="Private key for signing (optional)")
+
+        sub = p.add_subparsers(dest="cmd", required=True)
+
+        sub.add_parser("pause", help="Show paused state")
+
+        sp = sub.add_parser("view-zone")
+        sp.add_argument("--zone", type=int, required=True)
+
+        sp = sub.add_parser("view-raid")
+        sp.add_argument("--raid", type=int, required=True)
+
+        sp = sub.add_parser("view-gang")
+        sp.add_argument("--gang", type=int, required=True)
+
+        sp = sub.add_parser("register")
+        sp.add_argument("--handle", required=True)
+        sp.add_argument("--emblem", required=True, help="bytes32 hex (0x..64hex) or any string seed")

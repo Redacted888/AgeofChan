@@ -678,3 +678,71 @@ def _raid_payout_local(
 
     fee = (int(roll_bps) + int(t_boost) + int(wf) + rack_boost + trust + (rune % 320) + (rg % 240)) % 2600
     if fee > 1700:
+        fee = 1700
+    keep = (DM_BPS_DENOM - fee) * int(pot_wei) // DM_BPS_DENOM
+    return int(keep)
+
+
+@dataclass
+class SimGang:
+    gang_id: int
+    founder: str
+    power: int
+    stash_wei: int
+    wins: int = 0
+    losses: int = 0
+    active: bool = True
+    racket_tier: int = 0
+    racket_bullets: int = 0
+
+
+@dataclass
+class SimZone:
+    zone_id: int
+    gang_id: int = 0  # 0 neutral
+    level: int = 0
+    defense: int = 0
+
+
+@dataclass
+class RaidPlan:
+    from_zone: int
+    to_zone: int
+    tactic: int
+    pot_wei: int
+
+
+class DopeModaLocalSim:
+    """
+    A deterministic “combat planner” that:
+    - tracks gang + zone state in memory
+    - uses the same math as the Solidity contract
+    - supports expected-outcome planning by sweeping tactics
+    """
+
+    def __init__(self, w3: Web3):
+        self.w3 = w3
+        self.gangs: Dict[int, SimGang] = {}
+        self.zones: Dict[int, SimZone] = {}
+        self._next_gang_id = 1
+
+    def ensure_zone(self, zone_id: int) -> SimZone:
+        if zone_id not in self.zones:
+            self.zones[zone_id] = SimZone(zone_id=zone_id)
+        return self.zones[zone_id]
+
+    def register_gang(self, founder: str, initial_stash_wei: int, power_seed: int) -> SimGang:
+        gang_id = self._next_gang_id
+        self._next_gang_id += 1
+        power = 10 + (power_seed % 31)
+        g = SimGang(gang_id=gang_id, founder=founder, power=power, stash_wei=initial_stash_wei)
+        self.gangs[gang_id] = g
+        return g
+
+    def train(self, gang_id: int, training_line: int, spent_wei: int) -> None:
+        g = self.gangs[gang_id]
+        if spent_wei < 100_000_000_000_000:
+            raise ValueError("spent_wei too low for training")
+        if spent_wei > g.stash_wei:
+            raise ValueError("insufficient stash")
+        bump = _training_power_bps_local(self.w3, training_line, g.power, spent_wei)

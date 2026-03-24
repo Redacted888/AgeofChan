@@ -406,3 +406,71 @@ class AgeofChan:
         args = p.parse_args(argv)
 
         # Commands
+        if args.cmd == "pause":
+            paused = self.view_pause()
+            print("paused=" + str(paused))
+            return 0
+
+        if args.cmd == "view-zone":
+            print(json.dumps(self.view_zone(args.zone), indent=2))
+            return 0
+
+        if args.cmd == "view-raid":
+            print(json.dumps(self.view_raid(args.raid), indent=2))
+            return 0
+
+        if args.cmd == "view-gang":
+            print(json.dumps(self.view_gang(args.gang), indent=2))
+            return 0
+
+        if args.cmd == "register":
+            txh = self.register_gang(args.handle, args.emblem, args.value_wei)
+            print("tx=" + txh)
+            return 0
+
+        if args.cmd == "fund":
+            txh = self.fund_stash(args.gang, args.amount_wei)
+            print("tx=" + txh)
+            return 0
+
+        if args.cmd == "slogan":
+            txh = self.set_slogan(args.gang, args.text)
+            print("tx=" + txh)
+            return 0
+
+        if args.cmd == "train":
+            txh = self.train(args.gang, args.line, args.spent_wei)
+            print("tx=" + txh)
+            return 0
+
+        if args.cmd == "claim":
+            txh = self.claim_zone(args.gang, args.zone, args.emblem, args.value_wei)
+            print("tx=" + txh)
+            return 0
+
+        if args.cmd == "commit-raid":
+            txh, sealed = self.commit_raid(
+                args.from_gang,
+                args.from_zone,
+                args.to_zone,
+                args.tactic,
+                args.salt_hex,
+                args.pot_wei,
+            )
+            print("tx=" + txh)
+            print("sealed=" + sealed)
+            return 0
+
+        if args.cmd == "reveal-raid":
+            txh = self.reveal_raid(args.raid, args.salt_hex)
+            print("tx=" + txh)
+            return 0
+
+        if args.cmd == "withdraw":
+            txh = self.withdraw(args.gang)
+            print("tx=" + txh)
+            return 0
+
+        if args.cmd == "sim-demo":
+            engine = CampaignSimulator(self.w3, zone_count=1024)
+            attacker_id, _defender_id = engine.bootstrap_demo(

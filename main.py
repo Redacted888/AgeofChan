@@ -542,3 +542,71 @@ class AgeofChan:
 DM_BPS_DENOM = 10_000
 
 
+def _warflag_bps_local(w3: Web3, gang_id: int, zone_id: int, tactic: int) -> int:
+    """
+    Mirrors DopeModa.warflagBps:
+      idx = keccak256(abi.encodePacked(gangId, zoneId, tactic)) % 256
+      wf = DM_WARFLAGS[idx] interpreted as uint256
+      return wf % 700
+
+    DM_WARFLAGS is bytes32(keccak256("warflag-0xXX")) for XX in [00..ff].
+    """
+    packed = w3.solidity_keccak(
+        ["uint64", "uint16", "uint8"],
+        [int(gang_id), int(zone_id), int(tactic)],
+    )
+    idx = int(packed.hex(), 16) % 256
+    # Recreate DM_WARFLAGS[idx]
+    seed = "warflag-0x%02x" % idx
+    wf_bytes = w3.keccak(text=seed)
+    wf_int = int.from_bytes(wf_bytes, "big")
+    return wf_int % 700
+
+
+def _training_power_bps_local(w3: Web3, training_line: int, power_before: int, spent_wei: int) -> int:
+    """
+    Mirrors DopeModa.trainingPowerBps:
+      base = 120 + trainingLine * 9
+      p = powerBefore
+      spentBps = spentWei / 1e14 (coarse)
+      wf = warflagBps(uint64(powerBefore), uint16(trainingLine), trainingLine)
+      total = base + (p % 77) + (spentBps % 250) + wf
+      bump = clamp(total % 180, 8..150)
+    """
+    base = 120 + int(training_line) * 9
+    p = int(power_before)
+    spent_bps = int(spent_wei) // int(1e14)
+    wf = _warflag_bps_local(w3, power_before, training_line, training_line)
+    # Contract adds codexRune(trainingLine) which maps idx->idx for 0..31.
+    rune = int(training_line)
+    total = base + (p % 77) + (spent_bps % 250) + wf + (rune % 80)
+    bump = total % 180
+    if bump < 8:
+        bump = 8
+    if bump > 150:
+        bump = 150
+    return int(bump)
+
+
+def _raid_win_local(
+    w3: Web3,
+    attacker_power: int,
+    defender_power: int,
+    defender_is_neutral: bool,
+    defender_zone_level: int,
+    defender_zone_defense: int,
+    attacker_id: int,
+    to_zone_id: int,
+    tactic: int,
+    roll_bps: int,
+    attacker_racket_bullets: int,
+    attacker_rack_tier: int,
+    treaty_trust_half: int,
+) -> bool:
+    """
+    Mirrors DopeModa.raidWin (plus warflag skew).
+    """
+    if defender_is_neutral:
+        def_power = 60 + int(defender_zone_level) * 25
+    else:
+        def_power = int(defender_power) + int(defender_zone_defense)

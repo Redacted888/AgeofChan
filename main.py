@@ -610,3 +610,71 @@ def _raid_win_local(
         def_power = 60 + int(defender_zone_level) * 25
     else:
         def_power = int(defender_power) + int(defender_zone_defense)
+
+    diff = int(attacker_power) + 25 + int(tactic) * 11
+    thresh = (diff * DM_BPS_DENOM) // (int(def_power) + 500)
+    if thresh > DM_BPS_DENOM:
+        thresh = DM_BPS_DENOM
+
+    scaled = (thresh * (101 + int(defender_zone_level))) // 100
+    wf = _warflag_bps_local(w3, attacker_id, to_zone_id, tactic)
+    scaled = (scaled * (DM_BPS_DENOM + wf)) // DM_BPS_DENOM
+
+    # Racket boost: bullets % 900.
+    rack_boost = int(attacker_racket_bullets) % 900
+    if rack_boost != 0:
+        scaled = (scaled * (DM_BPS_DENOM + rack_boost)) // DM_BPS_DENOM
+
+    # Treaty influence: contract scales by (trustBps/2) for win chance.
+    if int(treaty_trust_half) != 0 and not defender_is_neutral:
+        scaled = (scaled * (DM_BPS_DENOM + int(treaty_trust_half))) // DM_BPS_DENOM
+
+    # Codex rune mirror: mz = 127 - (toZone % 128)
+    zmod = int(to_zone_id) % 128
+    mz = 127 - zmod
+    scaled = (scaled * (DM_BPS_DENOM + mz)) // DM_BPS_DENOM
+
+    # District glyph: dg = toZone % 32
+    dg = int(to_zone_id) % 32
+    scaled = (scaled * (DM_BPS_DENOM + dg)) // DM_BPS_DENOM
+
+    if scaled > DM_BPS_DENOM:
+        scaled = DM_BPS_DENOM
+    return int(roll_bps) <= int(scaled)
+
+
+def _raid_payout_local(
+    w3: Web3,
+    attacker_id: int,
+    defender_id: int,
+    to_zone_id: int,
+    pot_wei: int,
+    win: bool,
+    tactic: int,
+    roll_bps: int,
+    attacker_racket_bullets: int,
+    attacker_rack_tier: int,
+    treaty_trust_half: int,
+) -> int:
+    """
+    Mirrors DopeModa.raidPayoutWei.
+    """
+    t_boost = (int(tactic) + 1) * 3
+    wf = _warflag_bps_local(w3, attacker_id, int(to_zone_id) & 0xFFFF, tactic)
+    rack_boost = int(attacker_racket_bullets) % 800
+    rune = int(tactic)  # codexRune(tactic) == tactic for tactic < 32
+    rg = int(attacker_rack_tier)  # rackGlyphBps returns tier (0..15)
+    trust = int(treaty_trust_half)
+
+    if win:
+        fee = (int(roll_bps) * 2 + int(t_boost) + int(wf) + rack_boost + trust + (rune % 320) + (rg % 240)) % 2300
+        if fee > 1500:
+            fee = 1500
+        keep = (DM_BPS_DENOM - fee) * int(pot_wei) // DM_BPS_DENOM
+        return int(keep)
+
+    if int(defender_id) == 0:
+        return 0
+
+    fee = (int(roll_bps) + int(t_boost) + int(wf) + rack_boost + trust + (rune % 320) + (rg % 240)) % 2600
+    if fee > 1700:

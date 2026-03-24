@@ -338,3 +338,71 @@ class AgeofChan:
         sp = sub.add_parser("register")
         sp.add_argument("--handle", required=True)
         sp.add_argument("--emblem", required=True, help="bytes32 hex (0x..64hex) or any string seed")
+        sp.add_argument("--value-wei", type=int, required=True)
+
+        sp = sub.add_parser("fund")
+        sp.add_argument("--gang", type=int, required=True)
+        sp.add_argument("--amount-wei", type=int, required=True)
+
+        sp = sub.add_parser("slogan")
+        sp.add_argument("--gang", type=int, required=True)
+        sp.add_argument("--text", required=True)
+
+        sp = sub.add_parser("train")
+        sp.add_argument("--gang", type=int, required=True)
+        sp.add_argument("--line", type=int, required=True)
+        sp.add_argument("--spent-wei", type=int, required=True)
+
+        sp = sub.add_parser("claim")
+        sp.add_argument("--gang", type=int, required=True)
+        sp.add_argument("--zone", type=int, required=True)
+        sp.add_argument("--emblem", required=True)
+        sp.add_argument("--value-wei", type=int, required=True)
+
+        sp = sub.add_parser("commit-raid")
+        sp.add_argument("--from-gang", type=int, required=True)
+        sp.add_argument("--from-zone", type=int, required=True)
+        sp.add_argument("--to-zone", type=int, required=True)
+        sp.add_argument("--tactic", type=int, required=True)
+        sp.add_argument("--salt-hex", required=True, help="0x + 64 hex chars (bytes32)")
+        sp.add_argument("--pot-wei", type=int, required=True)
+
+        sp = sub.add_parser("reveal-raid")
+        sp.add_argument("--raid", type=int, required=True)
+        sp.add_argument("--salt-hex", required=True, help="0x + 64 hex chars (bytes32)")
+
+        sp = sub.add_parser("withdraw")
+        sp.add_argument("--gang", type=int, required=True)
+
+        # -----------------------------
+        # Offline simulation commands
+        # -----------------------------
+        sp = sub.add_parser("sim-demo")
+        sp.add_argument("--seed", type=int, default=1337)
+        sp.add_argument("--turns", type=int, default=10)
+        sp.add_argument("--from-zone", type=int, default=10)
+        sp.add_argument("--to-zone", type=int, default=11)
+        sp.add_argument("--pot-wei", type=int, default=10**15)
+        sp.add_argument("--attacker-power-seed", type=int, default=7)
+        sp.add_argument("--defender-power-seed", type=int, default=13)
+        sp.add_argument("--attacker-stash-wei", type=int, default=10**18)
+        sp.add_argument("--defender-stash-wei", type=int, default=10**18)
+
+        sp = sub.add_parser("sim-route")
+        sp.add_argument("--from-zone", type=int, required=True)
+        sp.add_argument("--to-zone", type=int, required=True)
+        sp.add_argument("--max-hops", type=int, default=16)
+
+        sp = sub.add_parser("sim-plan-raid")
+        sp.add_argument("--seed", type=int, default=2026)
+        sp.add_argument("--from-zone", type=int, default=12)
+        sp.add_argument("--to-zone", type=int, default=13)
+        sp.add_argument("--pot-wei", type=int, default=10**15)
+        sp.add_argument("--attacker-power-seed", type=int, default=9)
+        sp.add_argument("--defender-power-seed", type=int, default=17)
+        sp.add_argument("--attacker-stash-wei", type=int, default=10**18)
+        sp.add_argument("--defender-stash-wei", type=int, default=10**18)
+
+        args = p.parse_args(argv)
+
+        # Commands

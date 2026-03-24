@@ -134,3 +134,71 @@ class AgeofChan:
         )
         return "0x" + packed.hex()
 
+    def encode_bytes32(self, s: str) -> bytes:
+        """
+        Convert an input to 32-byte value.
+        - If s looks like 0x<64hex>, treat as bytes32.
+        - Else treat as UTF-8 and keccak into 32 bytes (deterministic).
+        """
+        s = s.strip()
+        if s.startswith("0x") and len(s) == 66:
+            return bytes.fromhex(s[2:])
+        # Deterministic from string
+        return self.w3.keccak(text=s)
+
+    # -----------------------------
+    # Read helpers
+    # -----------------------------
+
+    def view_pause(self) -> bool:
+        return bool(self.contract.functions.paused().call())
+
+    def view_zone(self, zone_id: int) -> Dict[str, Any]:
+        z = self.contract.functions.zoneView(zone_id).call()
+        return {
+            "gangId": int(z[0]),
+            "level": int(z[1]),
+            "defense": int(z[2]),
+            "lastClaimAt": int(z[3]),
+            "emblemHash": "0x" + z[4].hex(),
+        }
+
+    def view_raid(self, raid_id: int) -> Dict[str, Any]:
+        r = self.contract.functions.raidView(raid_id).call()
+        return {
+            "raider": r[0],
+            "fromGangId": int(r[1]),
+            "fromZone": int(r[2]),
+            "toZone": int(r[3]),
+            "tactic": int(r[4]),
+            "committedAt": int(r[5]),
+            "sealed": "0x" + r[6].hex(),
+            "potWei": int(r[7]),
+            "revealed": bool(r[8]),
+            "settled": bool(r[9]),
+        }
+
+    def view_gang(self, gang_id: int) -> Dict[str, Any]:
+        g = self.contract.functions.getGang(gang_id).call()
+        return {
+            "founder": g[0],
+            "handleHash": "0x" + g[1].hex(),
+            "sloganHash": "0x" + g[2].hex(),
+            "createdAt": int(g[3]),
+            "stashWei": int(g[4]),
+            "power": int(g[5]),
+            "wins": int(g[6]),
+            "losses": int(g[7]),
+            "lastZoneActionAt": int(g[8]),
+            "active": bool(g[9]),
+        }
+
+    # -----------------------------
+    # Tx helpers
+    # -----------------------------
+
+    def _get_nonce(self, sender: str) -> int:
+        return int(self.w3.eth.get_transaction_count(_norm_addr(sender)))
+
+    def _estimate_gas(self, tx: Dict[str, Any]) -> int:
+        try:

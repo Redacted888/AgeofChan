@@ -202,3 +202,71 @@ class AgeofChan:
 
     def _estimate_gas(self, tx: Dict[str, Any]) -> int:
         try:
+            return int(self.w3.eth.estimate_gas(tx))
+        except Exception:
+            # Fallback: use a safe-ish default.
+            return 400_000
+
+    def _sign_and_send(self, tx: Dict[str, Any]) -> str:
+        if not self.account:
+            raise RuntimeError("No PRIVATE_KEY provided; can't sign raw tx.")
+
+        # Ensure sender matches account
+        tx_sender = tx.get("from")
+        if tx_sender and _norm_addr(tx_sender) != _norm_addr(self.account.address):
+            raise RuntimeError("tx 'from' doesn't match PRIVATE_KEY sender.")
+
+        tx["from"] = self.account.address
+        tx.setdefault("nonce", self._get_nonce(self.account.address))
+        tx.setdefault("gas", self._estimate_gas(tx))
+        tx.setdefault("gasPrice", int(self.w3.eth.gas_price))
+        if "chainId" not in tx:
+            tx["chainId"] = int(self.w3.eth.chain_id)
+
+        signed = self.account.sign_transaction(tx)
+        tx_hash = self.w3.eth.send_raw_transaction(signed.rawTransaction)
+        return tx_hash.hex()
+
+    def _send_unlocked(self, tx: Dict[str, Any]) -> str:
+        # Nodes that support eth_sendTransaction will fill nonce/gas.
+        # This mode requires unlocked account on the node.
+        payload = {k: v for k, v in tx.items() if k in ("from", "to", "data", "value", "gas")}
+        # Convert ints to hex quantities for JSON-RPC
+        for k in ["value", "gas"]:
+            if k in payload and isinstance(payload[k], int):
+                payload[k] = hex(payload[k])
+        tx_hash = self.w3.provider.make_request("eth_sendTransaction", [payload]).get("result")
+        if not tx_hash:
+            raise RuntimeError("eth_sendTransaction failed")
+        return tx_hash
+
+    def _transact(self, fn, value_wei: int = 0) -> str:
+        tx_data = fn.build_transaction({"value": value_wei})
+        tx_sender = tx_data.get("from") or self.account.address if self.account else None
+        tx_data["from"] = tx_sender
+
+        if self.account:
+            tx_data.pop("from", None)  # signing sets correct from
+            return self._sign_and_send(tx_data)
+        return self._send_unlocked(tx_data)
+
+    # -----------------------------
+    # Gameplay commands
+    # -----------------------------
+
+    def register_gang(self, handle: str, emblem_hex: str, send_value_wei: int) -> str:
+        emblem = self.encode_bytes32(emblem_hex)
+        tx_fn = self.contract.functions.registerGang(handle, emblem)
+        return self._transact(tx_fn, value_wei=send_value_wei)
+
+    def fund_stash(self, gang_id: int, amount_wei: int) -> str:
+        tx_fn = self.contract.functions.fundStash(gang_id)
+        return self._transact(tx_fn, value_wei=amount_wei)
+
+    def set_slogan(self, gang_id: int, slogan: str) -> str:
+        tx_fn = self.contract.functions.setSlogan(gang_id, slogan)
+        return self._transact(tx_fn, value_wei=0)
+
+    def train(self, gang_id: int, training_line: int, spent_wei: int) -> str:
+        tx_fn = self.contract.functions.train(gang_id, training_line, spent_wei)
+        return self._transact(tx_fn, value_wei=0)

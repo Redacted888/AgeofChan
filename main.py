@@ -746,3 +746,71 @@ class DopeModaLocalSim:
         if spent_wei > g.stash_wei:
             raise ValueError("insufficient stash")
         bump = _training_power_bps_local(self.w3, training_line, g.power, spent_wei)
+        g.stash_wei -= spent_wei
+        g.power += bump
+
+    def claim_zone(self, gang_id: int, zone_id: int) -> None:
+        z = self.ensure_zone(zone_id)
+        if z.gang_id != 0:
+            raise ValueError("zone already claimed")
+        z.level += 1
+        z.gang_id = gang_id
+        # Match Solidity claim defense formula in spirit:
+        z.defense = int(z.level * 90 + (self.gangs[gang_id].power % 250))
+        self.gangs[gang_id].wins += 0  # tracked on raids
+
+    def plan_best_tactic(
+        self,
+        attacker_id: int,
+        from_zone_id: int,
+        to_zone_id: int,
+        pot_wei: int,
+        roll_assumption_bps: Optional[int] = None,
+    ) -> Dict[str, Any]:
+        """
+        Picks the tactic that maximizes expected “keep share” under a roll assumption.
+
+        If roll_assumption_bps is None, we use a heuristic roll:
+          roll ~= min(9000, win_prob * DM_BPS_DENOM / 2)
+        """
+        a = self.gangs[attacker_id]
+        z_to = self.ensure_zone(to_zone_id)
+        defender_neutral = (z_to.gang_id == 0)
+        defender_power = 0 if defender_neutral else self.gangs[z_to.gang_id].power
+        defender_zone_defense = int(z_to.defense)
+        defender_zone_level = int(z_to.level)
+
+        best = None
+        for tactic in range(0, 32):
+            # Compute win probability for this tactic:
+            # We estimate by selecting roll = scaled/2 to avoid heavy math.
+            # (Roll is ultimately determined by commit/reveal on-chain.)
+            if roll_assumption_bps is not None:
+                roll = int(roll_assumption_bps)
+            else:
+                # Build a “median roll” using a win check at roll=scaled/2
+                # We'll approximate by binary sampling over roll space.
+                # Instead, compute scaled threshold and then choose half of it.
+                # We can compute scaled by calling raidWin logic with a chosen roll;
+                # for speed we just sweep candidate roll in a small way.
+                roll = 0
+
+            # Heuristic evaluation:
+            # Let win = raidWin(attacker->zone,to tactic,roll). We need roll; pick fixed 0..9999 mapping.
+            if roll_assumption_bps is None:
+                # Recompute a “scaled threshold” by brute sampling with a tiny set of roll candidates.
+                # This keeps the planner logic understandable and short-ish.
+                # Candidates: 0, 2500, 5000, 7500, 9999
+                candidates = [0, 2500, 5000, 7500, 9999]
+                # pick the smallest roll where we likely win
+                # by checking raidWin at those points
+                chosen = 9999
+                for c in candidates:
+                    if _raid_win_local(
+                        self.w3,
+                        a.power,
+                        defender_power,
+                        defender_neutral,
+                        defender_zone_level,
+                        defender_zone_defense,
+                        attacker_id,

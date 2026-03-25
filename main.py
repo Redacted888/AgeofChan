@@ -950,3 +950,71 @@ class RoutePath:
 
 
 class RouteGraph:
+    """
+    Treats the zoneId space as a 32x32 grid with zone IDs from 1..1024.
+    We use 4-neighborhood movement (up/down/left/right).
+    """
+
+    def __init__(self, zone_count: int = 1024, width: int = 32):
+        self.zone_count = int(zone_count)
+        self.width = int(width)
+        self.height = (self.zone_count + self.width - 1) // self.width
+
+    def _id_to_xy(self, zone_id: int) -> Tuple[int, int]:
+        zid = int(zone_id)
+        if zid <= 0:
+            return (0, 0)
+        zid0 = zid - 1
+        return (zid0 % self.width, zid0 // self.width)
+
+    def _xy_to_id(self, x: int, y: int) -> int:
+        zid0 = int(y) * self.width + int(x)
+        zid = zid0 + 1
+        if zid < 1 or zid > self.zone_count:
+            return 0
+        return zid
+
+    def neighbors(self, zone_id: int) -> List[int]:
+        x, y = self._id_to_xy(zone_id)
+        out: List[int] = []
+        for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            nz = self._xy_to_id(x + dx, y + dy)
+            if nz != 0:
+                out.append(nz)
+        return out
+
+    def shortest_path(self, start_id: int, goal_id: int, max_hops: int = 64) -> RoutePath:
+        start_id = int(start_id)
+        goal_id = int(goal_id)
+        if start_id == goal_id:
+            return RoutePath(nodes=[start_id], distance=0)
+
+        q: List[int] = [start_id]
+        prev: Dict[int, Optional[int]] = {start_id: None}
+        dist: Dict[int, int] = {start_id: 0}
+
+        head = 0
+        while head < len(q):
+            cur = q[head]
+            head += 1
+            curd = dist[cur]
+            if curd >= max_hops:
+                continue
+            for nx in self.neighbors(cur):
+                if nx not in prev:
+                    prev[nx] = cur
+                    dist[nx] = curd + 1
+                    if nx == goal_id:
+                        # reconstruct
+                        path: List[int] = []
+                        node = goal_id
+                        while node is not None:
+                            path.append(node)
+                            node = prev[node]
+                        path.reverse()
+                        return RoutePath(nodes=path, distance=dist[goal_id])
+                    q.append(nx)
+
+        # fallback: direct distance approximation
+        sx, sy = self._id_to_xy(start_id)
+        gx, gy = self._id_to_xy(goal_id)

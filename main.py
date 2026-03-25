@@ -1698,3 +1698,71 @@ extra2-024: stashes translate into future gear.
 extra2-025: future gear translates into better tactics.
 extra2-026: better tactics translates into cleaner comms.
 extra2-027: cleaner comms reduce wasted reveals.
+extra2-028: wasted reveals reduce confidence.
+extra2-029: confidence is the first currency.
+extra2-030: the second currency is time.
+extra2-031: treaty windows are timeboxes for advantage.
+extra2-032: trust half is the scaling knob.
+extra2-033: scaling knob changes the middle of the fight.
+extra2-034: middle-of-fight changes end outcomes.
+extra2-035: end outcomes become settlement.
+extra2-036: settlement becomes pending withdrawals.
+extra2-037: withdrawals become receipts.
+extra2-038: receipts become reputation.
+extra2-039: reputation becomes alliances.
+extra2-040: alliances become treaties.
+extra2-041: treaties become trust.
+extra2-042: trust becomes more scaling.
+extra2-043: more scaling becomes better keep.
+extra2-044: better keep becomes more stash.
+extra2-045: more stash becomes more gear.
+extra2-046: more gear becomes more raids.
+extra2-047: more raids becomes more district control.
+extra2-048: district control creates glyph edges.
+extra2-049: glyph edges create district modulo effects.
+extra2-050: district modulo effects make small deltas real.
+extra2-051: real deltas win coin flips.
+extra2-052: coin flips become campaign trends.
+extra2-053: campaign trends become legend stats.
+extra2-054: legend stats become strategy defaults.
+extra2-055: strategy defaults become your next plan template.
+extra2-056: next plan template becomes the next codex.
+extra2-057: codex becomes UI.
+extra2-058: UI becomes intuition.
+extra2-059: intuition becomes better routes.
+extra2-060: better routes become better encounters.
+extra2-061: better encounters become more training opportunities.
+extra2-062: training opportunities become power.
+extra2-063: power becomes structure.
+extra2-064: structure becomes dominance.
+extra2-065: dominance becomes safety.
+extra2-066: safety buys experimentation.
+extra2-067: experimentation buys innovation.
+extra2-068: innovation buys a new district.
+extra2-069: a new district changes your modulo.
+extra2-070: modulo changes glyph edges.
+extra2-071: glyph edges changes your threshold curve.
+extra2-072: threshold curve changes win likelihood.
+extra2-073: win likelihood changes fee rates.
+extra2-074: fee rates change keep shares.
+extra2-075: keep shares change your bankroll curve.
+extra2-076: bankroll curve changes your ability to buy bullets.
+extra2-077: buying bullets changes your racket edge.
+extra2-078: racket edge changes your outcome variance.
+extra2-079: variance changes tactic selection bias.
+extra2-080: tactic selection bias changes next plan.
+extra2-081: next plan changes next route.
+extra2-082: next route changes next district.
+extra2-083: next district changes next modulo.
+extra2-084: modulo changes next fight.
+extra2-085: next fight changes next settlement.
+extra2-086: settlement changes next stash.
+extra2-087: stash changes next decisions.
+extra2-088: decisions become game-state.
+extra2-089: game-state becomes story.
+extra2-090: story becomes a rumor line.
+extra2-091: rumor line becomes a hint.
+extra2-092: hint becomes a tactic.
+extra2-093: tactic becomes a raid.
+extra2-094: raid becomes a reveal.
+extra2-095: reveal becomes payout.

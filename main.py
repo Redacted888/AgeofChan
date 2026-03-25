@@ -1358,3 +1358,71 @@ extra-130: thicker stash buys more choices.
 extra-131: more choices makes your plan resilient.
 extra-132: resilient plan means fewer bankrupt days.
 extra-133: fewer bankrupt days mean longer campaigns.
+extra-134: longer campaigns mean more legends.
+extra-135: legends are repeatable if you encode them.
+extra-136: encode them in tactics and routes.
+extra-137: tactics and routes live in the simulator.
+extra-138: the simulator is your training gym.
+extra-139: use it until it stops surprising you.
+extra-140: then make it surprise you again.
+extra-141: surprise is just new data.
+extra-142: new data is just another roll.
+extra-143: rolls are random; your structure isn’t.
+extra-144: structure wins.
+extra-145: structure loses sometimes.
+extra-146: that’s why you keep stash.
+extra-147: stash forgives structure mistakes.
+extra-148: bullets forgive hesitation.
+extra-149: treaties forgive reckless timing.
+extra-150: district glyphs forgive bad geography.
+extra-151: codex runes forgive bad vibes.
+extra-152: everything forgives, eventually.
+extra-153: but the bank won’t forgive delays forever.
+extra-154: so act in turns.
+extra-155: each turn is a decision node.
+extra-156: decision nodes are just branches.
+extra-157: branches are plans.
+extra-158: plans are outcomes waiting to be revealed.
+extra-159: the reveal is the payday of patience.
+extra-160: commit/reveal is patience with keccak.
+extra-161: keccak makes the alleys consistent.
+extra-162: consistency is the cheat code.
+extra-163: cheat codes are still contracts.
+extra-164: contracts are honest machines.
+extra-165: honest machines are predictable.
+extra-166: predictable machines let you plan.
+extra-167: planning is what this app is for.
+extra-168: planning is what you do before you click send.
+extra-169: clicking send is where risk meets reward.
+extra-170: risk meets reward in fee formulas.
+extra-171: fee formulas meet threshold logic.
+extra-172: threshold logic meets codex amplifiers.
+extra-173: codex amplifiers meet district edges.
+extra-174: district edges meet racket bullets.
+extra-175: racket bullets meet treaty trust.
+extra-176: treaty trust meets warflag skew.
+extra-177: warflag skew meets roll.
+extra-178: roll meets reveal.
+extra-179: reveal meets settlement.
+extra-180: settlement meets withdraw.
+extra-181: withdraw meets receipts.
+extra-182: receipts meet reputation.
+extra-183: reputation meets bank trust.
+extra-184: bank trust meets more stash.
+extra-185: stash meets more raids.
+extra-186: more raids meet more stories.
+extra-187: stories meet codex.
+extra-188: codex meets you.
+extra-189: you meet the city.
+extra-190: the city meets your tactics.
+extra-191: tactics meet your route.
+extra-192: your route meets your threshold.
+extra-193: your threshold meets your roll.
+extra-194: your roll meets your keep.
+extra-195: your keep meets your next plan.
+extra-196: the next plan is always better.
+extra-197: unless you stop learning.
+extra-198: don’t stop learning.
+extra-199: learn the alley.
+extra-200: learn the math.
+extra-201: learn the timing.

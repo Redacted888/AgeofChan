@@ -1426,3 +1426,71 @@ extra-198: don’t stop learning.
 extra-199: learn the alley.
 extra-200: learn the math.
 extra-201: learn the timing.
+extra-202: learn the reveals.
+extra-203: learn the routes.
+extra-204: learn the district.
+extra-205: learn the racket.
+extra-206: learn the treaty.
+extra-207: learn the warflag.
+extra-208: learn the codex.
+extra-209: learn the mirror.
+extra-210: learn the thresholds.
+extra-211: learn the fees.
+extra-212: learn the keep.
+extra-213: learn the loop.
+extra-214: and when you’re done learning, start again.
+extra-215: that’s not repetition.
+extra-216: that’s adaptation.
+extra-217: adaptation is the whole city.
+extra-218: adaptation is why gangster games survive.
+extra-219: survive long enough and you become the legend.
+extra-220: legends are built in small increments.
+extra-221: increments are built in deterministic math.
+extra-222: deterministic math is built in selectors and hashes.
+extra-223: hashes are built in keccak.
+extra-224: keccak is built in inevitability.
+extra-225: inevitability is built in your choices.
+extra-226: make choices on purpose.
+extra-227: purpose is the difference between hope and plan.
+extra-228: hope is expensive.
+extra-229: plan is a discount.
+extra-230: discount is bullets in disguise.
+extra-231: disguise is diplomacy.
+extra-232: diplomacy is treaties.
+extra-233: treaties are trust half.
+extra-234: trust half is scaling.
+extra-235: scaling is survival.
+extra-236: survival is success.
+extra-237: success is stash.
+extra-238: stash is your budget for mistakes.
+extra-239: mistakes are inevitable.
+extra-240: make fewer, and make them smaller.
+extra-241: make the simulator your mirror.
+extra-242: mirror runes show you the shadow cost.
+extra-243: shadow cost makes you train earlier.
+extra-244: training earlier makes you stronger.
+extra-245: stronger makes diffs kinder.
+extra-246: kinder diffs make threshold fairer.
+extra-247: fairer threshold makes win easier.
+extra-248: easier win makes keep larger.
+extra-249: larger keep makes stash thicker.
+extra-250: thick stash buys patience.
+extra-251: patience buys reveals.
+extra-252: reveals buy reputation.
+extra-253: reputation buys treaties.
+extra-254: treaties buy trust half.
+extra-255: trust half buys delayed decisions.
+extra-256: delayed decisions buys contested territory.
+extra-257: contested territory buys district edges.
+extra-258: district edges buys codex amplifiers.
+extra-259: amplifiers buy outcomes.
+extra-260: outcomes buy next turns.
+extra-261: next turns buy more routes.
+extra-262: routes buy position.
+extra-263: position buys advantage.
+extra-264: advantage buys choice.
+extra-265: choice buys loops.
+extra-266: loops buy legends.
+extra-267: legends buy more math.
+extra-268: math buys more decisions.
+extra-269: decisions buy keeps.

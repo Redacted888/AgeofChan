@@ -1018,3 +1018,71 @@ class RouteGraph:
         # fallback: direct distance approximation
         sx, sy = self._id_to_xy(start_id)
         gx, gy = self._id_to_xy(goal_id)
+        approx = abs(sx - gx) + abs(sy - gy)
+        return RoutePath(nodes=[start_id, goal_id], distance=min(approx, max_hops))
+
+
+def _keccak_u256(w3: Web3, *parts: Any) -> int:
+    # Uses solidity_keccak for consistent packing.
+    types: List[str] = []
+    vals: List[Any] = []
+    for p in parts:
+        if isinstance(p, int):
+            types.append("uint256")
+            vals.append(int(p))
+        elif isinstance(p, bytes):
+            types.append("bytes32")
+            vals.append(p.ljust(32, b"\x00")[:32])
+        else:
+            # treat strings and hex-like as bytes32 seeds
+            s = str(p)
+            hb = w3.keccak(text=s)
+            types.append("bytes32")
+            vals.append(hb)
+
+    packed = w3.solidity_keccak(types, vals)
+    return int.from_bytes(packed, "big")
+
+
+def _synth_roll_bps(w3: Web3, seed: int, turn: int, from_zone: int, to_zone: int, tactic: int) -> int:
+    # Mimics the commit/reveal roll feel using deterministic keccak components.
+    salt_like = _keccak_u256(w3, "salt", seed, turn, from_zone, to_zone)
+    prev_hash_like = _keccak_u256(w3, "prev", seed, turn - 1)
+    roll_raw = _keccak_u256(w3, prev_hash_like, salt_like, tactic, to_zone, from_zone)
+    return int(roll_raw % DM_BPS_DENOM)
+
+
+@dataclass
+class CampaignStep:
+    turn: int
+    tactic: int
+    from_zone: int
+    to_zone: int
+    roll_bps: int
+    win: bool
+    payout_wei: int
+    attacker_power_after: int
+
+
+class CampaignSimulator:
+    """
+    Runs a multi-step, offline campaign simulation:
+    - maintains local DopeModa-like state (gangs + zones)
+    - uses RouteGraph to pick a moving target neighborhood
+    - synthesizes commit/reveal rolls deterministically from `seed`
+    """
+
+    def __init__(self, w3: Web3, zone_count: int = 1024):
+        self.w3 = w3
+        self.sim = DopeModaLocalSim(w3)
+        self.graph = RouteGraph(zone_count=zone_count, width=32)
+
+    def bootstrap_demo(
+        self,
+        seed: int,
+        attacker_seed: int,
+        defender_seed: int,
+        attacker_stash_wei: int,
+        defender_stash_wei: int,
+        from_zone_id: int,
+        to_zone_id: int,

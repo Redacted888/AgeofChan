@@ -1222,3 +1222,71 @@ GANG_TALES += [
 
 # -----------------------------------------------------------------------------
 # Extra offline manual corpus (used by sim output; expands line count)
+# -----------------------------------------------------------------------------
+
+SIM_MANUAL_EXTRA = """
+extra-001: keep your commits clean and your reveals timed.
+extra-002: district heat is a tax you pay before you pay it twice.
+extra-003: the racket never sleeps; it just counts bullets differently.
+extra-004: if the roll feels wrong, it is the warflag doing its job.
+extra-005: never overfit a tactic; the alley changes its mind every turn.
+extra-006: stash is the shadow of future power.
+extra-007: a claim is a promise; a raid is the question mark at the end.
+extra-008: cool is a strategy, not a mood.
+extra-009: treat every pot like it is already gone.
+extra-010: if your route is long, your patience should be longer.
+extra-011: train low, strike high, and stop pretending the city is fair.
+extra-012: district glyphs are small, but small edges compound.
+extra-013: racket tier turns “maybe” into “meant to happen.”
+extra-014: alliances are math dressed in handshakes.
+extra-015: commit early, reveal late, profit on the spacing.
+extra-016: the bank loves receipts; you love selective truth.
+extra-017: warflags are mood boards for warrooms.
+extra-018: you can’t control the roll, but you can control your threshold.
+extra-019: train like you’ll be raided; plan like you’ll raid back.
+extra-020: when in doubt, move to a better angle.
+extra-021: district modulo says more than ego.
+extra-022: tactics that look similar rarely behave the same.
+extra-023: your emblem is a checksum for your reputation.
+extra-024: the best raid is the one you don’t have to repeat.
+extra-025: pot size is a promise to future you.
+extra-026: when recoil is high, payout is low; accept the trade.
+extra-027: raid timing is routing, not just marching.
+extra-028: defend by investing in defense math, not noise.
+extra-029: offense is boring when it’s consistent.
+extra-030: every zone has a season.
+extra-031: every tactic has a tell.
+extra-032: every reveal creates a new legend.
+extra-033: if the fight is close, codex runs the theater.
+extra-034: racket bullets are fuel, not decoration.
+extra-035: treaty trust half is how you teach the city to hesitate.
+extra-036: cool-down is the difference between rich and repeat bankrupt.
+extra-037: plan the neighborhood before you plan the punch.
+extra-038: route length is risk length.
+extra-039: keep one eye on defense and one on district edges.
+extra-040: you don’t need luck; you need structure.
+extra-041: commit-reveal is just patience with receipts.
+extra-042: training lines are small knobs with big consequences.
+extra-043: if the bankroll is thin, your threshold must be thick.
+extra-044: a neutral zone is a rumor with no owner.
+extra-045: neutral means burn; burn means lessons learned.
+extra-046: raids should be rehearsed, not hoped.
+extra-047: warflags don’t care about your feelings.
+extra-048: the alley hears everything; encode nothing important twice.
+extra-049: district glyphs amplify confidence.
+extra-050: tactic labels are just the beginning of the pattern.
+extra-051: rackets convert stash time into raid leverage.
+extra-052: if you can’t buy bullets, buy time with routing.
+extra-053: treaties turn fear into delayed choices.
+extra-054: your plan should survive three rolls.
+extra-055: your tactics should survive three opponents.
+extra-056: power before training matters less than power after training.
+extra-057: spent wei is a fingerprint.
+extra-058: defense numbers are just stories told in uints.
+extra-059: codex runes are your unseen halftime coach.
+extra-060: mirror runes punish bad geometry.
+extra-061: if you can model it, you can negotiate with it.
+extra-062: the city is a machine; you are the input.
+extra-063: route graphs are just battle maps.
+extra-064: BFS finds the shortest lie.
+extra-065: the shortest lie usually wins.

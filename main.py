@@ -1086,3 +1086,71 @@ class CampaignSimulator:
         defender_stash_wei: int,
         from_zone_id: int,
         to_zone_id: int,
+    ) -> Tuple[int, int]:
+        rng = random.Random(int(seed))
+        # Register gangs.
+        attacker = self.sim.register_gang(founder="attacker", initial_stash_wei=attacker_stash_wei, power_seed=attacker_seed)
+        defender = self.sim.register_gang(founder="defender", initial_stash_wei=defender_stash_wei, power_seed=defender_seed)
+
+        # Claim start zone ownership (gives zones levels/defense structure).
+        self.sim.claim_zone(attacker.gang_id, from_zone_id)
+        self.sim.claim_zone(defender.gang_id, to_zone_id)
+
+        # Give the attacker some default gear so the expanded raid math matters.
+        attacker.racket_bullets = int(10_000 + rng.randint(0, 5_000))
+        attacker.racket_tier = int(rng.randint(0, 15))
+
+        return attacker.gang_id, defender.gang_id
+
+    def run_campaign(
+        self,
+        seed: int,
+        turns: int,
+        from_zone_id: int,
+        target_zone_id: int,
+        attacker_id: int,
+        pot_wei: int,
+        base_tactic: int = 7,
+        defender_zone_growth: bool = True,
+    ) -> List[CampaignStep]:
+        turns = int(turns)
+        seed = int(seed)
+        from_zone_id = int(from_zone_id)
+        target_zone_id = int(target_zone_id)
+
+        steps: List[CampaignStep] = []
+        rng = random.Random(seed)
+
+        for t in range(turns):
+            # Pick a to-zone by shortest path distance shaping.
+            path = self.graph.shortest_path(from_zone_id, target_zone_id, max_hops=16)
+            hop_idx = min(len(path.nodes) - 1, rng.randint(0, max(0, path.distance)))
+            to_zone = path.nodes[hop_idx]
+
+            # Use planner to choose tactic; bias toward base_tactic.
+            plan = self.sim.plan_best_tactic(
+                attacker_id=attacker_id,
+                from_zone_id=from_zone_id,
+                to_zone_id=to_zone,
+                pot_wei=pot_wei,
+                roll_assumption_bps=None,
+            )
+            tactic = int(plan.get("tactic", base_tactic))
+
+            # Synthesize roll deterministically.
+            roll = _synth_roll_bps(self.w3, seed, t + 1, from_zone_id, to_zone, tactic)
+            # Apply raid outcome.
+            outcome = self.sim.simulate_raid_once(
+                attacker_id=attacker_id,
+                from_zone_id=from_zone_id,
+                to_zone_id=to_zone,
+                tactic=tactic,
+                pot_wei=pot_wei,
+                roll_bps=roll,
+            )
+
+            a = self.sim.gangs[attacker_id]
+            win = bool(outcome["win"])
+
+            # Optional defense growth to keep campaigns moving.
+            if defender_zone_growth and (not win):

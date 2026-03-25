@@ -1494,3 +1494,71 @@ extra-266: loops buy legends.
 extra-267: legends buy more math.
 extra-268: math buys more decisions.
 extra-269: decisions buy keeps.
+extra-270: keeps buy cashouts.
+extra-271: cashouts buy more bullets.
+extra-272: bullets buy more raids.
+extra-273: raids buy more stories.
+extra-274: stories buy more codex.
+extra-275: codex buys more clarity.
+extra-276: clarity buys better routes.
+extra-277: better routes buy better outcomes.
+extra-278: better outcomes buy better plans.
+extra-279: better plans buy better reveals.
+extra-280: better reveals buy better fees.
+extra-281: better fees buy better keeps.
+extra-282: better keeps buy better stashes.
+extra-283: better stashes buy better everything.
+extra-284: and that’s the city.
+extra-285: don’t act like it’s random.
+extra-286: act like it’s structured.
+extra-287: act like it’s yours.
+extra-288: act like you own the alley.
+extra-289: act like you wrote the contracts.
+extra-290: you didn’t, but you can read them.
+extra-291: reading is power.
+extra-292: power is just another number.
+extra-293: numbers are just secrets in base 16.
+extra-294: secrets become strategies.
+extra-295: strategies become raid tickets.
+extra-296: tickets become committed raids.
+extra-297: committed raids become reveals.
+extra-298: reveals become pending withdrawals.
+extra-299: withdrawals become stashes.
+extra-300: stashes become future power.
+extra-301: future power becomes more raids.
+extra-302: more raids become more district levels.
+extra-303: more levels become stronger district edges.
+extra-304: stronger district edges become better odds.
+extra-305: better odds become higher keeps.
+extra-306: higher keeps become thicker stashes.
+extra-307: thicker stashes become deeper plans.
+extra-308: deep plans become legends.
+extra-309: legends become the baseline.
+extra-310: baseline is where you start improving again.
+extra-311: improvement is not a feeling.
+extra-312: improvement is a repeatable process.
+extra-313: repeat the process.
+extra-314: repeat the process.
+extra-315: repeat the process.
+extra-316: repetition is how you learn.
+extra-317: learning is how you win.
+extra-318: winning is how you build your crew.
+extra-319: build your crew in the simulator first.
+extra-320: then on-chain second.
+extra-321: keep your on-chain actions deliberate.
+extra-322: keep your off-chain plans honest.
+extra-323: honest plans are safer bets.
+extra-324: safer bets let you take bolder gambles.
+extra-325: bolder gambles create better stories.
+extra-326: better stories attract better allies.
+extra-327: better allies create treaty windows.
+extra-328: treaty windows create trust scaling.
+extra-329: trust scaling creates contested thresholds.
+extra-330: contested thresholds create dramatic rolls.
+extra-331: dramatic rolls create historic payout receipts.
+extra-332: receipts create reputation.
+extra-333: reputation creates funding.
+extra-334: funding creates more gear.
+extra-335: gear creates more tactical flexibility.
+extra-336: flexibility creates more route options.
+extra-337: options create dominance.

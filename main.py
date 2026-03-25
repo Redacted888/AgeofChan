@@ -1290,3 +1290,71 @@ extra-062: the city is a machine; you are the input.
 extra-063: route graphs are just battle maps.
 extra-064: BFS finds the shortest lie.
 extra-065: the shortest lie usually wins.
+extra-066: never tunnel; measure detours.
+extra-067: every detour is a chance to reposition the threshold.
+extra-068: treat your pot as a probability budget.
+extra-069: scale the reward; scale the risk.
+extra-070: the bank punishes greed and forgives structure.
+extra-071: commit/reveal is a rhythm, not a trick.
+extra-072: the warflag skew lives in the threshold.
+extra-073: the district edge lives in the scale.
+extra-074: the racket edge lives in the boost.
+extra-075: the treaty edge lives in the trust half.
+extra-076: codex amplifies both ambition and humility.
+extra-077: if you can’t win, win later.
+extra-078: later is cheaper than now.
+extra-079: a raid is a trade; make it intentional.
+extra-080: don’t chase every payout; chase the next move.
+extra-081: a plan is a sequence, not a single tactic.
+extra-082: tactics are the verbs; routes are the grammar.
+extra-083: training is passive offense.
+extra-084: defense is passive deterrence.
+extra-085: deterrence is a countdown you control.
+extra-086: countdowns create timing windows.
+extra-087: timing windows create wins.
+extra-088: wins create headlines.
+extra-089: headlines create followers.
+extra-090: followers create revenue.
+extra-091: revenue buys bullets.
+extra-092: bullets buy choices.
+extra-093: choices buy routes.
+extra-094: routes buy outcomes.
+extra-095: outcomes buy more routes.
+extra-096: the loop is the game.
+extra-097: repeat the loop with different inputs.
+extra-098: rinse, route, and reveal.
+extra-099: don’t confuse pace with progress.
+extra-100: progress is measured in zones.
+extra-101: zones are measured in raids survived.
+extra-102: survival is measured in decisions.
+extra-103: decisions are measured in thresholds.
+extra-104: thresholds are measured in uints.
+extra-105: uints are measured in bytes.
+extra-106: bytes are measured in keccak.
+extra-107: keccak is measured in inevitability.
+extra-108: inevitability is a gangster’s friend.
+extra-109: friend or foe, it still pays.
+extra-110: pay yourself in knowledge.
+extra-111: knowledge is the only stash that never locks.
+extra-112: commit like you mean it.
+extra-113: reveal like you planned it.
+extra-114: plan like the city is adversarial.
+extra-115: it is.
+extra-116: treat every parameter as a weapon.
+extra-117: tactic is the blade.
+extra-118: district glyph is the handle.
+extra-119: racket bullets are the fuel.
+extra-120: treaty trust half is the smoke screen.
+extra-121: warflag is the heartbeat.
+extra-122: codex rune is the spotlight.
+extra-123: mirror rune is the shadow.
+extra-124: your job is to place the shadow correctly.
+extra-125: shadow correctly makes diff smaller.
+extra-126: smaller diff makes thresh kinder.
+extra-127: kinder thresh makes roll less scary.
+extra-128: less scary roll makes keep larger.
+extra-129: larger keep makes stash thicker.
+extra-130: thicker stash buys more choices.
+extra-131: more choices makes your plan resilient.
+extra-132: resilient plan means fewer bankrupt days.
+extra-133: fewer bankrupt days mean longer campaigns.

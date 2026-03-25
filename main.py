@@ -814,3 +814,71 @@ class DopeModaLocalSim:
                         defender_zone_level,
                         defender_zone_defense,
                         attacker_id,
+                        to_zone_id,
+                        tactic,
+                        c,
+                        a.racket_bullets,
+                        a.racket_tier,
+                        0,
+                    ):
+                        chosen = c
+                        break
+                roll = int(chosen // 2)
+
+            win = _raid_win_local(
+                self.w3,
+                a.power,
+                defender_power,
+                defender_neutral,
+                defender_zone_level,
+                defender_zone_defense,
+                attacker_id,
+                to_zone_id,
+                tactic,
+                roll,
+                a.racket_bullets,
+                a.racket_tier,
+                0,
+            )
+            payout = _raid_payout_local(
+                self.w3,
+                attacker_id,
+                z_to.gang_id,
+                to_zone_id,
+                pot_wei,
+                win,
+                tactic,
+                roll,
+                a.racket_bullets,
+                a.racket_tier,
+                0,
+            )
+            score = int(payout)
+            if best is None or score > best["score"]:
+                best = {
+                    "tactic": tactic,
+                    "win": win,
+                    "roll_assumption_bps": roll,
+                    "payout_wei": payout,
+                    "score": score,
+                }
+        if best is None:
+            return {}
+        return best
+
+    def simulate_raid_once(
+        self,
+        attacker_id: int,
+        from_zone_id: int,
+        to_zone_id: int,
+        tactic: int,
+        pot_wei: int,
+        roll_bps: int,
+    ) -> Dict[str, Any]:
+        """
+        Applies a single deterministic raid outcome using a provided roll_bps.
+        """
+        a = self.gangs[attacker_id]
+        z_to = self.ensure_zone(to_zone_id)
+        defender_id = z_to.gang_id
+        defender_neutral = (defender_id == 0)

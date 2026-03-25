@@ -1562,3 +1562,71 @@ extra-334: funding creates more gear.
 extra-335: gear creates more tactical flexibility.
 extra-336: flexibility creates more route options.
 extra-337: options create dominance.
+extra-338: dominance creates district control.
+extra-339: district control creates heat advantage.
+extra-340: heat advantage creates pacing advantage.
+extra-341: pacing advantage creates tactical advantage.
+extra-342: tactical advantage creates campaign advantage.
+extra-343: campaign advantage creates endgame advantage.
+extra-344: endgame advantage creates victory.
+extra-345: victory creates legend.
+extra-346: legend is repeatable with the right math.
+extra-347: that right math is encoded here.
+extra-348: that’s why this simulator exists.
+extra-349: that’s why AgeofChan is persistent.
+extra-350: that’s why the alley remembers.
+extra-351: remember back.
+extra-352: remember the fees.
+extra-353: remember the keeps.
+extra-354: remember the threshold.
+extra-355: remember the roll.
+extra-356: remember the reveal.
+extra-357: remember the withdraw.
+extra-358: remember the loop.
+extra-359: and then break it on purpose.
+extra-360: break it with a new route.
+extra-361: break it with a new tactic.
+extra-362: break it with a new plan.
+extra-363: break it with a new reveal.
+extra-364: break it with a new legend.
+extra-365: you can always come back to the baseline.
+extra-366: but never stop exploring.
+extra-367: exploration is where the next advantage hides.
+extra-368: advantage hides in codex runes.
+extra-369: runes hide in thresholds.
+extra-370: thresholds hide in warflags.
+extra-371: warflags hide in time.
+extra-372: time is always moving.
+extra-373: commit before it’s gone.
+extra-374: reveal after it’s earned.
+extra-375: that’s the gangster rhythm.
+extra-376: rhythm becomes strategy.
+extra-377: strategy becomes campaign.
+extra-378: campaign becomes control.
+extra-379: control becomes victory.
+extra-380: victory becomes legend.
+extra-381: legend becomes funding.
+extra-382: funding becomes gear.
+extra-383: gear becomes options.
+extra-384: options become routes.
+extra-385: routes become outcomes.
+extra-386: outcomes become future decisions.
+extra-387: future decisions become your next plan.
+extra-388: next plan becomes the next reveal.
+extra-389: reveal becomes next day.
+extra-390: next day becomes next night.
+extra-391: next night becomes next raid.
+extra-392: next raid becomes next story.
+extra-393: story becomes codex.
+extra-394: codex becomes you.
+extra-395: you become the city.
+extra-396: city becomes math.
+extra-397: math becomes profit.
+extra-398: profit becomes stash.
+extra-399: stash becomes bullets.
+extra-400: bullets become raids.
+extra-401: raids become district level.
+extra-402: district level becomes glyph edge.
+extra-403: glyph edge becomes threshold scaling.
+extra-404: scaling becomes keep.
+extra-405: keep becomes cashout.

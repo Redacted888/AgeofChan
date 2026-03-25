@@ -1766,3 +1766,57 @@ extra2-092: hint becomes a tactic.
 extra2-093: tactic becomes a raid.
 extra2-094: raid becomes a reveal.
 extra2-095: reveal becomes payout.
+extra2-096: payout becomes confidence.
+extra2-097: confidence becomes discipline.
+extra2-098: discipline becomes mastery.
+extra2-099: mastery becomes dominance again.
+extra2-100: repeat the loop on purpose.
+"""
+
+
+def manual_snippet(seed: int, width: int = 10) -> str:
+    """
+    Deterministically picks a small snippet from `SIM_MANUAL_EXTRA`.
+    Keeps the CLI output spicy without needing external files.
+    """
+    seed = int(seed)
+    width = int(width)
+    lines = [ln.strip() for ln in SIM_MANUAL_EXTRA.strip().splitlines() if ln.strip()]
+    if not lines:
+        return "no-manual"
+    rng = random.Random(seed)
+    start = rng.randint(0, max(0, len(lines) - width))
+    picked = lines[start : start + width]
+    return " | ".join(picked)
+
+
+def main():
+    # This wrapper allows running:
+    #   python AgeofChan.py --contract <addr> <cmd> ...
+    cfg = ChainConfig(
+        rpc_url=os.environ.get("RPC_URL", DEFAULT_RPC),
+        contract="0x0000000000000000000000000000000000000000",
+        artifact=None,
+        private_key=os.environ.get("PRIVATE_KEY"),
+    )
+
+    # Parse only enough to get --contract and optional artifact/pk.
+    # Then pass remaining args to AgeofChan.run.
+    p0 = argparse.ArgumentParser(add_help=False)
+    p0.add_argument("--rpc", default=os.environ.get("RPC_URL", DEFAULT_RPC))
+    p0.add_argument("--contract", required=True)
+    p0.add_argument("--artifact", default=None)
+    p0.add_argument("--pk", default=os.environ.get("PRIVATE_KEY"))
+    known, rest = p0.parse_known_args()
+
+    cfg.rpc_url = known.rpc
+    cfg.contract = known.contract
+    cfg.artifact = known.artifact
+    cfg.private_key = known.pk
+
+    app = AgeofChan(cfg)
+    return app.run(rest)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

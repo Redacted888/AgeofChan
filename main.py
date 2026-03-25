@@ -1630,3 +1630,71 @@ extra-402: district level becomes glyph edge.
 extra-403: glyph edge becomes threshold scaling.
 extra-404: scaling becomes keep.
 extra-405: keep becomes cashout.
+extra-406: cashout becomes stash.
+extra-407: stash becomes power.
+extra-408: power becomes training.
+extra-409: training becomes raids.
+extra-410: raids become campaigns.
+extra-411: campaigns become legends.
+extra-412: legends become the baseline.
+extra-413: baseline becomes improvement.
+extra-414: improvement becomes dominance.
+extra-415: dominance becomes more legends.
+extra-416: more legends become allies.
+extra-417: allies become treaties.
+extra-418: treaties become trust.
+extra-419: trust becomes scaling.
+extra-420: scaling becomes victory.
+"""
+
+EXTRA_RULES = [
+    "rule-rail-001: scout before commit.",
+    "rule-rail-002: raid with intent.",
+    "rule-rail-003: train on schedule.",
+    "rule-rail-004: route is risk control.",
+    "rule-rail-005: district modulo matters.",
+    "rule-rail-006: racket bullets are leverage.",
+    "rule-rail-007: treaty trust half buys hesitation.",
+    "rule-rail-008: warflag skew lives in thresholds.",
+    "rule-rail-009: codex runes amplify plan edges.",
+    "rule-rail-010: mirror runes punish poor geometry.",
+    "rule-rail-011: fee clamp is the hidden governor.",
+    "rule-rail-012: neutral zones teach humility.",
+    "rule-rail-013: don’t chase, compound.",
+    "rule-rail-014: keep share is a budget.",
+    "rule-rail-015: stash is future math.",
+    "rule-rail-016: power is your insurance.",
+    "rule-rail-017: defense is patience.",
+    "rule-rail-018: raids are negotiations.",
+    "rule-rail-019: reveals are timed truths.",
+    "rule-rail-020: keep the loop alive.",
+]
+
+SIM_MANUAL_EXTRA_2 = """
+extra2-001: the alley loves deterministic noise.
+extra2-002: deterministic noise makes decisions reproducible.
+extra2-003: reproducible decisions make planning possible.
+extra2-004: planning possible means fewer on-chain surprises.
+extra2-005: fewer surprises means safer deployments.
+extra2-006: safer deployments keep budgets intact.
+extra2-007: intact budgets buy more training cycles.
+extra2-008: training cycles build power over time.
+extra2-009: power over time beats panic.
+extra2-010: panic is expensive, even in math.
+extra2-011: keep panic out of your commit stage.
+extra2-012: keep panic out of your reveal stage.
+extra2-013: keep panic out of your routing stage.
+extra2-014: routing stage determines your odds.
+extra2-015: odds determine your payout expectation.
+extra2-016: payout expectation determines your pot size choices.
+extra2-017: pot size choices decide your risk horizon.
+extra2-018: risk horizon decides how you spend bullets.
+extra2-019: bullets spend translates into raid edge.
+extra2-020: raid edge translates into threshold shifts.
+extra2-021: threshold shifts translate into win probability.
+extra2-022: win probability translates into keeps.
+extra2-023: keeps translate into stashes.
+extra2-024: stashes translate into future gear.
+extra2-025: future gear translates into better tactics.
+extra2-026: better tactics translates into cleaner comms.
+extra2-027: cleaner comms reduce wasted reveals.

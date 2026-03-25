@@ -882,3 +882,71 @@ class DopeModaLocalSim:
         z_to = self.ensure_zone(to_zone_id)
         defender_id = z_to.gang_id
         defender_neutral = (defender_id == 0)
+
+        win = _raid_win_local(
+            self.w3,
+            a.power,
+            0 if defender_neutral else self.gangs[defender_id].power,
+            defender_neutral,
+            z_to.level,
+            z_to.defense,
+            attacker_id,
+            to_zone_id,
+            tactic,
+            roll_bps,
+            a.racket_bullets,
+            a.racket_tier,
+            0,
+        )
+
+        payout = _raid_payout_local(
+            self.w3,
+            attacker_id,
+            defender_id,
+            to_zone_id,
+            pot_wei,
+            win,
+            tactic,
+            roll_bps,
+            a.racket_bullets,
+            a.racket_tier,
+            0,
+        )
+
+        # Apply settlement effects to local state (match spirit of Solidity).
+        if win:
+            z_to.gang_id = attacker_id
+            z_to.level = int(z_to.level) + 1
+            z_to.defense = int(z_to.level * 105 + (a.power % 200))
+            a.wins += 1
+            a.power += 5 + (tactic % 3)
+            a_last = 0
+            # defender losses
+            if defender_id != 0:
+                self.gangs[defender_id].losses += 1
+                if self.gangs[defender_id].power > 2:
+                    self.gangs[defender_id].power -= 2
+        else:
+            a.losses += 1
+            if a.power > 3:
+                a.power -= 3
+            if defender_id != 0:
+                self.gangs[defender_id].wins += 1
+                self.gangs[defender_id].power += 4
+                z_to.defense = int(z_to.defense) + (tactic % 7)
+
+        return {"win": win, "payout_wei": payout, "roll_bps": roll_bps}
+
+
+# -----------------------------------------------------------------------------
+# Route + campaign scaffolding (offline; supports the CLI simulation commands)
+# -----------------------------------------------------------------------------
+
+
+@dataclass
+class RoutePath:
+    nodes: List[int]
+    distance: int
+
+
+class RouteGraph:
